@@ -14,15 +14,17 @@ public class PayOperationContext {
     private final List<PayStrategy> payStrategys;
 
     public PayOperationContext (List<PayStrategy> payStrategys) {
+        System.out.println("策略模式的上下文"+payStrategys.size());
         this.payStrategys = payStrategys ;
     }
 
-    public void payAction(CommandPay commandPay) {
+    public int payAction(CommandPay commandPay) {
         for (PayStrategy payStrategy: payStrategys) {
             if (payStrategy.isSupport(commandPay)){
-                payStrategy.payAction(commandPay);
+                return payStrategy.payAction(commandPay);
             }
         }
+        return 0;
     }
 
 }

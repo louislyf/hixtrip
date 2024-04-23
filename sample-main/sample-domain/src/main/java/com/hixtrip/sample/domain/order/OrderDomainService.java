@@ -20,26 +20,26 @@ public class OrderDomainService {
      * todo 需要实现
      * 创建待付款订单
      */
-    public void createOrder(Order order) {
+    public int createOrder(Order order) {
         //需要你在infra实现, 自行定义出入参
-        orderRepository.createOrder(order);
+        return orderRepository.createOrder(order);
     }
 
     /**
      * todo 需要实现
      * 待付款订单支付成功
      */
-    public void orderPaySuccess(CommandPay commandPay) {
+    public int orderPaySuccess(CommandPay commandPay) {
         //需要你在infra实现, 自行定义出入参
-        orderRepository.orderPaySuccess(commandPay);
+        return orderRepository.orderPaySuccess(commandPay);
     }
 
     /**
      * todo 需要实现
      * 待付款订单支付失败
      */
-    public void orderPayFail(CommandPay commandPay) {
+    public int orderPayFail(CommandPay commandPay) {
         //需要你在infra实现, 自行定义出入参
-        orderRepository.orderPayFail(commandPay);
+        return orderRepository.orderPayFail(commandPay);
     }
 }

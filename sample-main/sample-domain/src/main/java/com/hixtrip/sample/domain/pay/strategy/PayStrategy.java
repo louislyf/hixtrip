@@ -15,6 +15,6 @@ public interface PayStrategy {
      * 支付结果处理
      * @param commandPay
      */
-    void payAction(CommandPay commandPay);
+    int payAction(CommandPay commandPay);
 
 }

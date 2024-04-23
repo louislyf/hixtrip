@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@TableName(value = "order", autoResultMap = true)
+@TableName(value = "order_tbl", autoResultMap = true)
 @SuperBuilder(toBuilder = true)
 public class OrderDO {
 

@@ -5,7 +5,6 @@ import com.hixtrip.sample.app.api.PayService;
 import com.hixtrip.sample.client.order.dto.CommandOderCreateDTO;
 import com.hixtrip.sample.client.order.dto.CommandPayDTO;
 import com.hixtrip.sample.client.order.vo.OrderCreateVO;
-import com.hixtrip.sample.client.order.vo.PayVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,11 +31,7 @@ public class OrderController {
      */
     @PostMapping(path = "/command/order/create")
     public OrderCreateVO order(@RequestBody CommandOderCreateDTO commandOderCreateDTO){
-
-        Assert.notNull(commandOderCreateDTO, "request can not null");
-        Assert.notNull(commandOderCreateDTO.getSkuId(), "request can not null");
-        Assert.notNull(commandOderCreateDTO.getAmount(), "request can not null");
-
+        //参数校验
         //登录信息可以在这里模拟
         var userId = "lyf";
         commandOderCreateDTO.setUserId(userId);
@@ -53,11 +48,14 @@ public class OrderController {
      */
     @PostMapping(path = "/command/order/pay/callback")
     public String payCallback(@RequestBody CommandPayDTO commandPayDTO) {
-        Assert.notNull(commandPayDTO, "request can not null");
-        Assert.notNull(commandPayDTO.getOrderId(), "request can not null");
-        Assert.notNull(commandPayDTO.getPayStatus(), "request can not null");
-        payService.payCallback(commandPayDTO);
-        return "success";
+        //参数校验，略
+        int result = payService.payCallback(commandPayDTO);
+
+        if(result == 0){
+            return "callback fail";
+        }
+
+        return "callback success";
     }
 
 }

@@ -10,7 +10,8 @@ public enum PayStatusEnum {
 
     draft("0","待支付"),
     success("1", "支付成功"),
-    fail("2", "支付失败");
+    fail("2", "支付失败"),
+    repeatPay("3", "重复支付");
 
     private final String code;
     private final String status;

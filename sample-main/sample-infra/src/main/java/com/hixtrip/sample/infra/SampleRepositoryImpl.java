@@ -26,7 +26,11 @@ public class SampleRepositoryImpl implements SampleRepository {
         redisTemplate.opsForValue().set("test", "123");
         //此处可调用mybatis进行查询，DO转化为领域对象返回，如：
         SampleDO sampleDO = sampleMapper.selectSample();
+        if(null == sampleDO){
+            sampleDO = SampleDO.builder().id(1L).name("test").build();
+            sampleMapper.insert(sampleDO);
+        }
         SampleDO sampleDO1 = sampleMapper.selectById(1L);
-        return SampleDOConvertor.INSTANCE.doToDomain(sampleDO);
+        return SampleDOConvertor.INSTANCE.doToDomain(sampleDO1);
     }
 }

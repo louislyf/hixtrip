@@ -10,6 +10,6 @@ public interface PayService {
     /**
      * 支付回调
      */
-    void payCallback(CommandPayDTO commandPay);
+    int payCallback(CommandPayDTO commandPay);
 
 }

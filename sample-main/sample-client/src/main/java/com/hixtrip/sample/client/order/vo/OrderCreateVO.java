@@ -21,25 +21,9 @@ public class OrderCreateVO {
      */
     private String id;
 
-
     /**
-     * 购买人
+     * 返回信息
      */
-    private String userId;
+    private String msg;
 
-
-    /**
-     * SkuId
-     */
-    private String skuId;
-
-    /**
-     * 购买数量
-     */
-    private Integer amount;
-
-    /**
-     * 购买金额
-     */
-    private BigDecimal money;
 }

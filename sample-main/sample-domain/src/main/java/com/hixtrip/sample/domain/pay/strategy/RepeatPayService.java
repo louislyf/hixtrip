@@ -4,18 +4,19 @@ import com.hixtrip.sample.domain.order.OrderDomainService;
 import com.hixtrip.sample.domain.pay.model.CommandPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 /**
- * 支付成功 的策略
+ * 重复支付 的策略
  */
 @Service
-public class PaySuccessService implements PayStrategy{
+public class RepeatPayService implements PayStrategy{
 
     @Autowired
     private OrderDomainService orderDomainService;
 
     @Override
     public boolean isSupport(CommandPay commandPay) {
-        if(PayStatusEnum.success.getCode().equals(commandPay.getStatus())){
+        if(PayStatusEnum.repeatPay.getCode().equals(commandPay.getStatus())){
             return true;
         }
         return false;
@@ -23,6 +24,7 @@ public class PaySuccessService implements PayStrategy{
 
     @Override
     public int payAction(CommandPay commandPay) {
-        return orderDomainService.orderPaySuccess(commandPay);
+        // 重复支付的 处理代码
+        return 1;
     }
 }

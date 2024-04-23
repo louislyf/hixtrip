@@ -11,15 +11,15 @@ public interface OrderRepository {
     /**
      * 创建待付款订单
      */
-    void createOrder(Order order);
+    int createOrder(Order order);
 
     /**
      * 待付款订单支付成功
      */
-    void orderPaySuccess(CommandPay commandPay) ;
+    int orderPaySuccess(CommandPay commandPay) ;
 
     /**
      * 待付款订单支付失败
      */
-    void orderPayFail(CommandPay commandPay) ;
+    int orderPayFail(CommandPay commandPay) ;
 }

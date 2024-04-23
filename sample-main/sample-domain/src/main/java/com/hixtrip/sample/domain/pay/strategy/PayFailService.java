@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 支付失败 处理
+ * 支付失败 的策略
  */
 @Service
 public class PayFailService implements PayStrategy{
@@ -16,14 +16,14 @@ public class PayFailService implements PayStrategy{
 
     @Override
     public boolean isSupport(CommandPay commandPay) {
-        if(PayStatusEnum.fail.getCode().equals(commandPay.getPayStatus())){
+        if(PayStatusEnum.fail.getCode().equals(commandPay.getStatus())){
             return true;
         }
         return false;
     }
 
     @Override
-    public void payAction(CommandPay commandPay) {
-        orderDomainService.orderPayFail(commandPay);
+    public int payAction(CommandPay commandPay) {
+        return orderDomainService.orderPayFail(commandPay);
     }
 }

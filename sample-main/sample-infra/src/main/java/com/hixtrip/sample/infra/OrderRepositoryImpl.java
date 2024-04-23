@@ -23,31 +23,30 @@ public class OrderRepositoryImpl implements OrderRepository {
     private OrderMapper orderMapper;
 
     @Override
-    public void createOrder(Order order) {
-        orderMapper.insert(OrderDOConvertor.INSTANCE.toOrderDO(order));
+    public int createOrder(Order order) {
+        OrderDO orderDO = OrderDOConvertor.INSTANCE.toOrderDO(order);
+        return orderMapper.insert(orderDO);
     }
 
     @Override
-    public void orderPaySuccess(CommandPay commandPay) {
+    public int orderPaySuccess(CommandPay commandPay) {
         OrderDO order = orderMapper.selectById(commandPay.getOrderId());
         if(null != order){
             order.setPayStatus(PayStatusEnum.success.getCode());
             order.setPayTime(new Date());
-            order.setUpdateBy("");
-            order.setUpdateTime(LocalDateTime.now());
-            orderMapper.updateById(order);
+            return orderMapper.updateById(order);
         }
+        return 0;
     }
 
     @Override
-    public void orderPayFail(CommandPay commandPay) {
+    public int orderPayFail(CommandPay commandPay) {
         OrderDO order = orderMapper.selectById(commandPay.getOrderId());
         if(null != order){
             order.setPayStatus(PayStatusEnum.fail.getCode());
             order.setPayTime(new Date());
-            order.setUpdateBy("");
-            order.setUpdateTime(LocalDateTime.now());
-            orderMapper.updateById(order);
+            return orderMapper.updateById(order);
         }
+        return 0;
     }
 }

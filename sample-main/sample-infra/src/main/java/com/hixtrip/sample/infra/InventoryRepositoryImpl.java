@@ -24,12 +24,18 @@ public class InventoryRepositoryImpl implements InventoryRepository {
      */
     @Override
     public Inventory getInventory(String skuId) {
-        try {
-            Inventory inventory = (Inventory)redisTemplate.opsForValue().get(skuId);
-            return inventory;
-        } catch (Exception e) {
-            return null;
+        Object sku = redisTemplate.opsForValue().get(skuId);
+        //如果没有缓存，则从数据库查询后缓存进来
+        if(null == sku){
+            //查库存表，这边只是模拟
+            redisTemplate.opsForValue().set(skuId, Inventory.builder()
+                    .sellableQuantity(100L)
+                    .withholdingQuantity(0L)
+                    .occupiedQuantity(0L).build());
+
+            sku = redisTemplate.opsForValue().get(skuId);
         }
+        return (Inventory)sku;
     }
 
 
@@ -44,25 +50,12 @@ public class InventoryRepositoryImpl implements InventoryRepository {
      */
     @Override
     public Boolean changeInventory(String skuId, Long sellableQuantity, Long withholdingQuantity, Long occupiedQuantity) {
-        List<Object> result =null;
-        int count = 0;
-        do {
-            redisTemplate.setEnableTransactionSupport(true);
-            redisTemplate.watch(skuId); //观察是否改变
-            redisTemplate.multi(); //开始事务
-            redisTemplate.opsForValue().set(skuId, Inventory.builder()
-                    .sellableQuantity(sellableQuantity)
-                    .withholdingQuantity(withholdingQuantity)
-                    .occupiedQuantity(occupiedQuantity).build());
-            try {
-                result = redisTemplate.exec();//执行事务
-            } catch (Exception e) {
-                count ++;
-            }
-        } while ((result == null || result.size() <= 0) && count<3);
-        if(result == null || result.size() <= 0){
-            return false;
-        }
+
+        redisTemplate.opsForValue().set(skuId, Inventory.builder()
+                .sellableQuantity(sellableQuantity)
+                .withholdingQuantity(withholdingQuantity)
+                .occupiedQuantity(occupiedQuantity).build());
+
         return true;
     }
 }
