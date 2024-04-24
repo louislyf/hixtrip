@@ -14,8 +14,16 @@ public class Result<T> implements Serializable {
     private String msg;
     private T data;
 
+    public static <T> Result<T> success(){
+        return builderResult(200, "success", null);
+    }
+
     public static <T> Result<T> success(T data){
         return builderResult(200, "success", data);
+    }
+
+    public static <T> Result<T> fail(){
+        return builderResult(500, "fail", null);
     }
 
     public static <T> Result<T> fail(T data){

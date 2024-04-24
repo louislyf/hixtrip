@@ -18,7 +18,7 @@ public class PayOperationContext {
         this.payStrategys = payStrategys ;
     }
 
-    public int payAction(CommandPay commandPay) {
+    public int payAction(CommandPay commandPay) throws Exception{
         for (PayStrategy payStrategy: payStrategys) {
             if (payStrategy.isSupport(commandPay)){
                 return payStrategy.payAction(commandPay);

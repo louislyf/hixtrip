@@ -60,6 +60,6 @@ public class CommandPay {
     public boolean repeatPay(){
         //查订单表，看看订单状态，以及金额是否一致，用来判断是否重复支付
         //同时也查一下回调记录表，是否存在相同的订单
-        return true;
+        return false;
     }
 }

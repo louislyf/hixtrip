@@ -23,7 +23,7 @@ public class RepeatPayService implements PayStrategy{
     }
 
     @Override
-    public int payAction(CommandPay commandPay) {
+    public int payAction(CommandPay commandPay) throws Exception{
         // 重复支付的 处理代码
         return 1;
     }

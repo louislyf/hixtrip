@@ -5,8 +5,9 @@ import com.hixtrip.sample.app.api.PayService;
 import com.hixtrip.sample.client.order.dto.CommandOderCreateDTO;
 import com.hixtrip.sample.client.order.dto.CommandPayDTO;
 import com.hixtrip.sample.client.order.vo.OrderCreateVO;
+import com.hixtrip.sample.util.Result;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,13 +31,17 @@ public class OrderController {
      * @return 请修改出参对象
      */
     @PostMapping(path = "/command/order/create")
-    public OrderCreateVO order(@RequestBody CommandOderCreateDTO commandOderCreateDTO){
+    public Result<?> order(@RequestBody CommandOderCreateDTO commandOderCreateDTO){
         //参数校验
         //登录信息可以在这里模拟
         var userId = "lyf";
         commandOderCreateDTO.setUserId(userId);
 
-        return orderService.createOrder(commandOderCreateDTO);
+        OrderCreateVO vo = orderService.createOrder(commandOderCreateDTO);
+        if(vo == null || StringUtils.isNotBlank(vo.getMsg())){
+            Result.fail(vo);
+        }
+        return Result.success(vo);
     }
 
     /**
@@ -47,15 +52,19 @@ public class OrderController {
      * @return 请修改出参对象
      */
     @PostMapping(path = "/command/order/pay/callback")
-    public String payCallback(@RequestBody CommandPayDTO commandPayDTO) {
-        //参数校验，略
-        int result = payService.payCallback(commandPayDTO);
-
-        if(result == 0){
-            return "callback fail";
+    public Result<String> payCallback(@RequestBody CommandPayDTO commandPayDTO) {
+        //参数校验
+        if(commandPayDTO == null || StringUtils.isBlank(commandPayDTO.getOrderId())){
+            return Result.fail("参数不能为空");
         }
 
-        return "callback success";
+        try {
+            payService.payCallback(commandPayDTO);
+        } catch (Exception e) {
+            return Result.fail(e.getMessage());
+        }
+
+        return Result.success();
     }
 
 }

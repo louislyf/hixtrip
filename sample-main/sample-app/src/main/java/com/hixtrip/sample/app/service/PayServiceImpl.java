@@ -23,7 +23,7 @@ public class PayServiceImpl implements PayService {
     /**
      * 支付回调
      */
-    public int payCallback(CommandPayDTO commandPay) {
+    public int payCallback(CommandPayDTO commandPay) throws Exception{
 
         //记录支付回调结果
         payDomainService.payRecord(PayConvertor.INSTANCE.toCommandPay(commandPay));

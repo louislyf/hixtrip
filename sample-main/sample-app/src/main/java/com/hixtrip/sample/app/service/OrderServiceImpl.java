@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
         boolean takeLock = redisTemplate.opsForValue().setIfAbsent(lockKey, lockVal, 20, TimeUnit.SECONDS);
         if(!takeLock){
             //不让创建锁，即未抢到锁，返回失败
-            return OrderCreateVO.builder().msg("error").build();
+            return OrderCreateVO.builder().msg("未抢到锁,请重试").build();
         }
 
         try {
@@ -82,9 +82,8 @@ public class OrderServiceImpl implements OrderService {
                         inventory.getSellableQuantity() - commandOderCreateDTO.getAmount(),
                         commandOderCreateDTO.getAmount() + inventory.getWithholdingQuantity(),
                         inventory.getOccupiedQuantity());
-                orderCreateVO.setMsg("save success");
             }else{
-                orderCreateVO.setMsg("save fail");
+                orderCreateVO.setMsg("保存失败");
             }
             return orderCreateVO;
 
